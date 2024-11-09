@@ -74,11 +74,15 @@ const Index = () => {
           onValueChange={handlePuzzleChange}
         >
           <SelectTrigger className="w-[180px] sm:w-[300px] border-0 bg-transparent text-lg sm:text-2xl font-bold text-emerald-400 focus:ring-0">
-            <SelectValue />
+            <SelectValue className="text-left" />
           </SelectTrigger>
           <SelectContent className="max-w-none w-[180px] sm:w-[300px]">
             {Object.keys(puzzles).map(puzzleId => (
-              <SelectItem key={puzzleId} value={puzzleId} className="whitespace-normal">
+              <SelectItem 
+                key={puzzleId} 
+                value={puzzleId} 
+                className="whitespace-normal pr-8 text-left"
+              >
                 {puzzleId}
               </SelectItem>
             ))}
