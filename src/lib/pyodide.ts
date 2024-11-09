@@ -22,11 +22,15 @@ export async function runTests(solutionCode: string, testCode: string): Promise<
   const py = await initPyodide();
   
   try {
-    // Create virtual files
+    // Clean up any existing files first
     await py.runPythonAsync(`
 import os
-if not os.path.exists('test'):
-    os.makedirs('test')
+import shutil
+
+if os.path.exists('test'):
+    shutil.rmtree('test')
+
+os.makedirs('test')
     
 with open('test/solution.py', 'w') as f:
     f.write('''${solutionCode}''')
