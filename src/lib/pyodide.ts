@@ -9,12 +9,11 @@ declare global {
 let pyodide: PyodideInterface | null = null;
 
 export async function initPyodide() {
-  if (!pyodide) {
-    pyodide = await window.loadPyodide({
-      indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/",
-    });
-    await pyodide.loadPackage("pytest");
-  }
+  // Reset pyodide instance on each initialization
+  pyodide = await window.loadPyodide({
+    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/",
+  });
+  await pyodide.loadPackage("pytest");
   return pyodide;
 }
 
@@ -22,13 +21,21 @@ export async function runTests(solutionCode: string, testCode: string): Promise<
   const py = await initPyodide();
   
   try {
-    // Clean up any existing files first
+    // Clean up any existing files and Python modules
     await py.runPythonAsync(`
 import os
+import sys
 import shutil
 
+# Clean up any existing test directory
 if os.path.exists('test'):
     shutil.rmtree('test')
+
+# Clean up any cached modules
+if 'solution' in sys.modules:
+    del sys.modules['solution']
+if 'test_solution' in sys.modules:
+    del sys.modules['test_solution']
 
 os.makedirs('test')
     

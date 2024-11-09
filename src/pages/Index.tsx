@@ -3,26 +3,37 @@ import { Button } from "@/components/ui/button";
 import CodeEditor from "@/components/CodeEditor";
 import ConsoleOutput from "@/components/ConsoleOutput";
 import { runTests } from "@/lib/pyodide";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const DEFAULT_TEST = `from solution import X
+const PUZZLES = {
+  "identity-crisis": {
+    test: `from solution import X
 
 def test():
     a = X()
     b = X()
 
     assert a is not b
-    assert id(a) == id(b)`;
+    assert id(a) == id(b)`
+  }
+};
 
 const Index = () => {
   const [solutionCode, setSolutionCode] = useState("");
-  const [testCode] = useState(DEFAULT_TEST);
+  const [selectedPuzzle, setSelectedPuzzle] = useState("identity-crisis");
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
 
   const handleTest = async () => {
     setIsRunning(true);
     try {
-      const result = await runTests(solutionCode, testCode);
+      const result = await runTests(solutionCode, PUZZLES[selectedPuzzle].test);
       setOutput(result);
     } catch (error) {
       console.error("Failed to run tests:", error);
@@ -38,9 +49,17 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background p-6 flex flex-col gap-6">
       <header className="flex items-center justify-between px-6 py-4 bg-secondary rounded-xl border border-secondary/20">
-        <h1 className="text-2xl font-bold text-emerald-400">
-          Pyzzles
-        </h1>
+        <Select
+          value={selectedPuzzle}
+          onValueChange={setSelectedPuzzle}
+        >
+          <SelectTrigger className="w-[200px] border-0 bg-transparent text-2xl font-bold text-emerald-400 focus:ring-0">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="identity-crisis">identity-crisis</SelectItem>
+          </SelectContent>
+        </Select>
         <Button
           onClick={handleTest}
           disabled={isRunning}
@@ -81,7 +100,7 @@ const Index = () => {
             <h2 className="text-lg font-medium text-foreground font-mono">test_solution.py</h2>
             <div className="flex-1 overflow-hidden rounded-lg border border-secondary/20">
               <CodeEditor
-                value={testCode}
+                value={PUZZLES[selectedPuzzle].test}
                 readOnly
                 className="opacity-100"
               />
