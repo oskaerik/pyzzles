@@ -19,6 +19,16 @@ export default {
     },
     extend: {
       colors: {
+        editor: {
+          bg: "#1e1e1e",
+          text: "#d4d4d4",
+        },
+        console: {
+          bg: "#1a1a1a",
+          text: "#ffffff",
+          success: "#4ade80",
+          error: "#ef4444",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
