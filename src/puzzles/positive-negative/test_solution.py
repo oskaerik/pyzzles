@@ -1,6 +1,6 @@
 import solution
 
+x = -1
+
 def test():
-    x = -1
-    
     assert x > 0
