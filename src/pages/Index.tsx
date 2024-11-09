@@ -27,7 +27,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 flex flex-col gap-6">
-      <header className="flex items-center justify-between px-6 py-4 bg-secondary/30 rounded-xl backdrop-blur-sm border border-secondary/20">
+      <header className="flex items-center justify-between px-6 py-4 bg-secondary rounded-xl border border-secondary/20">
         <h1 className="text-2xl font-bold text-emerald-400">
           Pyzzles
         </h1>
@@ -41,14 +41,14 @@ const Index = () => {
       </header>
       
       <div className="flex-1 flex flex-col gap-6 min-h-0">
-        <div className="h-[200px]">
-          <h2 className="text-lg font-medium text-foreground/90 mb-2">Console Output</h2>
+        <div className="bg-background rounded-lg border border-secondary/20 p-4">
+          <h2 className="text-lg font-medium text-foreground mb-2">Console Output</h2>
           <ConsoleOutput output={output} />
         </div>
         
         <div className="flex-1 grid gap-6 md:grid-cols-2">
           <div className="flex flex-col gap-2">
-            <h2 className="text-lg font-medium text-foreground/90">Solution</h2>
+            <h2 className="text-lg font-medium text-foreground">Solution</h2>
             <div className="flex-1 overflow-hidden rounded-lg border border-secondary/20">
               <CodeEditor
                 value={solutionCode}
@@ -58,12 +58,12 @@ const Index = () => {
           </div>
           
           <div className="flex flex-col gap-2">
-            <h2 className="text-lg font-medium text-foreground/90">Test Cases</h2>
+            <h2 className="text-lg font-medium text-foreground">Test Cases</h2>
             <div className="flex-1 overflow-hidden rounded-lg border border-secondary/20">
               <CodeEditor
                 value={testCode}
                 readOnly
-                className="opacity-90"
+                className="opacity-100"
               />
             </div>
           </div>
