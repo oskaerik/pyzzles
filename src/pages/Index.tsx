@@ -45,7 +45,14 @@ const Index = () => {
     try {
       const result = await runTests(solutionCode, puzzles[selectedPuzzle]?.test || "");
       setOutput(result);
-      setTestStatus(result.includes("FAILED") ? "failed" : "passed");
+      // Only set passed if there are no errors and tests actually passed
+      setTestStatus(
+        result.includes("error") || result.includes("Error") || result.includes("FAILED")
+          ? "failed"
+          : result.includes("passed")
+          ? "passed"
+          : null
+      );
     } catch (error) {
       console.error("Failed to run tests:", error);
       setTestStatus("failed");
@@ -66,12 +73,12 @@ const Index = () => {
           value={selectedPuzzle}
           onValueChange={handlePuzzleChange}
         >
-          <SelectTrigger className="w-[140px] sm:w-[200px] border-0 bg-transparent text-lg sm:text-2xl font-bold text-emerald-400 focus:ring-0 truncate">
+          <SelectTrigger className="w-[180px] sm:w-[300px] border-0 bg-transparent text-lg sm:text-2xl font-bold text-emerald-400 focus:ring-0">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="max-w-none w-[180px] sm:w-[300px]">
             {Object.keys(puzzles).map(puzzleId => (
-              <SelectItem key={puzzleId} value={puzzleId}>
+              <SelectItem key={puzzleId} value={puzzleId} className="whitespace-normal">
                 {puzzleId}
               </SelectItem>
             ))}

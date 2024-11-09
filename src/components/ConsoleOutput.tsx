@@ -7,8 +7,8 @@ interface ConsoleOutputProps {
 
 const ConsoleOutput = ({ output, className }: ConsoleOutputProps) => {
   const lines = output.split("\n");
-  const hasError = output.includes("FAILED") || output.includes("Error");
-  const hasSuccess = output.includes("passed");
+  const hasError = output.includes("FAILED") || output.includes("Error") || output.includes("error");
+  const hasSuccess = output.includes("passed") && !hasError;
 
   return (
     <div
