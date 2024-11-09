@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import CodeEditor from "@/components/CodeEditor";
 import ConsoleOutput from "@/components/ConsoleOutput";
 import { runTests } from "@/lib/pyodide";
-import { loadPuzzles } from "@/lib/puzzles";
+import { loadPuzzles, type Puzzle } from "@/lib/puzzles";
 import { CheckCircle2, XCircle } from "lucide-react";
 import {
   Select,
@@ -13,20 +13,37 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const PUZZLES = loadPuzzles();
-
 const Index = () => {
   const [solutionCode, setSolutionCode] = useState("");
-  const [selectedPuzzle, setSelectedPuzzle] = useState("identity-crisis");
+  const [puzzles, setPuzzles] = useState<Record<string, Puzzle>>({});
+  const [selectedPuzzle, setSelectedPuzzle] = useState<string>("");
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const [testStatus, setTestStatus] = useState<"passed" | "failed" | null>(null);
+
+  useEffect(() => {
+    const initPuzzles = async () => {
+      const loadedPuzzles = await loadPuzzles();
+      setPuzzles(loadedPuzzles);
+      // Select first puzzle by default
+      const firstPuzzleId = Object.keys(loadedPuzzles)[0];
+      setSelectedPuzzle(firstPuzzleId);
+    };
+    initPuzzles();
+  }, []);
+
+  const handlePuzzleChange = (puzzleId: string) => {
+    setSelectedPuzzle(puzzleId);
+    setSolutionCode(""); // Clear solution code
+    setOutput(""); // Clear console output
+    setTestStatus(null); // Reset test status
+  };
 
   const handleTest = async () => {
     setIsRunning(true);
     setTestStatus(null);
     try {
-      const result = await runTests(solutionCode, PUZZLES[selectedPuzzle].test);
+      const result = await runTests(solutionCode, puzzles[selectedPuzzle]?.test || "");
       setOutput(result);
       setTestStatus(result.includes("FAILED") ? "failed" : "passed");
     } catch (error) {
@@ -47,13 +64,13 @@ const Index = () => {
       <header className="flex items-center justify-between px-4 sm:px-6 py-4 bg-secondary rounded-xl border border-secondary/20">
         <Select
           value={selectedPuzzle}
-          onValueChange={setSelectedPuzzle}
+          onValueChange={handlePuzzleChange}
         >
-          <SelectTrigger className="w-[140px] sm:w-[200px] border-0 bg-transparent text-lg sm:text-2xl font-bold text-emerald-400 focus:ring-0">
+          <SelectTrigger className="w-[140px] sm:w-[200px] border-0 bg-transparent text-lg sm:text-2xl font-bold text-emerald-400 focus:ring-0 truncate">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            {Object.keys(PUZZLES).map(puzzleId => (
+            {Object.keys(puzzles).map(puzzleId => (
               <SelectItem key={puzzleId} value={puzzleId}>
                 {puzzleId}
               </SelectItem>
@@ -108,7 +125,7 @@ const Index = () => {
             <h2 className="text-lg font-medium text-foreground font-mono">test_solution.py</h2>
             <div className="flex-1 overflow-hidden rounded-lg border border-secondary/20">
               <CodeEditor
-                value={PUZZLES[selectedPuzzle].test}
+                value={puzzles[selectedPuzzle]?.test || ""}
                 readOnly
                 className="opacity-100"
               />

@@ -3,20 +3,21 @@ export interface Puzzle {
   test: string;
 }
 
-export function loadPuzzles(): Record<string, Puzzle> {
-  const puzzles: Record<string, Puzzle> = {
-    "identity-crisis": {
-      id: "identity-crisis",
-      test: `from solution import X
+// Import all test files using Vite's import.meta.glob
+const testFiles = import.meta.glob('/src/puzzles/*/test_solution.py', { as: 'raw' });
 
-def test():
-    a = X()
-    b = X()
+export async function loadPuzzles(): Promise<Record<string, Puzzle>> {
+  const puzzles: Record<string, Puzzle> = {};
+  
+  // Convert paths to puzzle IDs and load test contents
+  for (const path of Object.keys(testFiles)) {
+    const id = path.split('/')[3]; // Extract puzzle name from path
+    const test = await testFiles[path]();
+    puzzles[id] = { id, test };
+  }
 
-    assert a is not b
-    assert id(a) == id(b)`
-    }
-  };
-
-  return puzzles;
+  // Sort puzzles alphabetically
+  return Object.fromEntries(
+    Object.entries(puzzles).sort(([a], [b]) => a.localeCompare(b))
+  );
 }
