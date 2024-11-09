@@ -13,7 +13,7 @@ const ConsoleOutput = ({ output, className }: ConsoleOutputProps) => {
   return (
     <div
       className={cn(
-        "h-full w-full overflow-auto rounded-md border bg-console-bg p-4 font-mono text-sm text-console-text",
+        "h-full w-full overflow-auto rounded-lg border bg-secondary/50 p-4 font-mono text-sm text-foreground/90",
         className
       )}
     >
@@ -22,15 +22,15 @@ const ConsoleOutput = ({ output, className }: ConsoleOutputProps) => {
           key={index}
           className={cn(
             "whitespace-pre-wrap",
-            line.includes("FAILED") && "text-console-error",
-            line.includes("passed") && "text-console-success"
+            line.includes("FAILED") && "text-red-400",
+            line.includes("passed") && "text-green-400"
           )}
         >
           {line}
         </div>
       ))}
       {!output && (
-        <div className="text-gray-400">
+        <div className="text-muted-foreground">
           Click the "Test" button to run your code...
         </div>
       )}
