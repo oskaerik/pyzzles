@@ -21,6 +21,7 @@ const CodeEditor = ({ value, onChange, readOnly = false, className }: CodeEditor
           minimap: { enabled: false },
           fontSize: 14,
           lineNumbers: "on",
+          lineNumbersMinChars: 2,
           readOnly,
           scrollBeyondLastLine: false,
           automaticLayout: true,
