@@ -12,6 +12,8 @@ class WeirdList(list):
 
 def trace(frame, event, arg):
     patch = frame.f_code.co_name == "test"
-    frame.f_globals["__builtins__"]["list"] = WeirdList if patch else list
+    frame.f_globals["__builtins__"]["list"] = (
+        WeirdList if patch else list
+    )
 
 sys.settrace(trace)
