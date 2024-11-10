@@ -11,7 +11,7 @@ let pyodide: PyodideInterface | null = null;
 export async function initPyodide() {
   // Reset pyodide instance on each initialization
   pyodide = await window.loadPyodide({
-    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.25.0/full/",
+    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.3/full/",
   });
   await pyodide.loadPackage("pytest");
   return pyodide;

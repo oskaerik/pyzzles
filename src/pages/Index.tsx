@@ -5,6 +5,7 @@ import ConsoleOutput from "@/components/ConsoleOutput";
 import { runTests } from "@/lib/pyodide";
 import { loadPuzzles, type Puzzle } from "@/lib/puzzles";
 import { CheckCircle2, XCircle } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Select,
   SelectContent,
@@ -20,23 +21,25 @@ const Index = () => {
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
   const [testStatus, setTestStatus] = useState<"passed" | "failed" | null>(null);
+  const navigate = useNavigate();
+  const { puzzleId } = useParams();
 
   useEffect(() => {
     const initPuzzles = async () => {
       const loadedPuzzles = await loadPuzzles();
       setPuzzles(loadedPuzzles);
-      // Select first puzzle by default
-      const firstPuzzleId = Object.keys(loadedPuzzles)[0];
-      setSelectedPuzzle(firstPuzzleId);
+      const validPuzzleId = puzzleId && loadedPuzzles[puzzleId] ? puzzleId : Object.keys(loadedPuzzles)[0];
+      setSelectedPuzzle(validPuzzleId);
     };
     initPuzzles();
-  }, []);
+  }, [puzzleId]);
 
   const handlePuzzleChange = (puzzleId: string) => {
     setSelectedPuzzle(puzzleId);
-    setSolutionCode(""); // Clear solution code
-    setOutput(""); // Clear console output
-    setTestStatus(null); // Reset test status
+    setSolutionCode("");
+    setOutput("");
+    setTestStatus(null);
+    navigate(`/puzzles/${puzzleId}`);
   };
 
   const handleTest = async () => {
@@ -45,7 +48,6 @@ const Index = () => {
     try {
       const result = await runTests(solutionCode, puzzles[selectedPuzzle]?.test || "");
       setOutput(result);
-      // Only set passed if there are no errors and tests actually passed
       setTestStatus(
         result.includes("error") || result.includes("Error") || result.includes("FAILED")
           ? "failed"
@@ -73,15 +75,15 @@ const Index = () => {
           value={selectedPuzzle}
           onValueChange={handlePuzzleChange}
         >
-          <SelectTrigger className="w-[180px] sm:w-[300px] border-0 bg-transparent text-lg sm:text-2xl font-bold text-emerald-400 focus:ring-0">
-            <SelectValue className="text-left" />
+          <SelectTrigger className="w-[200px] sm:w-[300px] border-0 bg-transparent text-lg sm:text-2xl font-bold text-emerald-400 focus:ring-0">
+            <SelectValue className="text-left truncate" />
           </SelectTrigger>
-          <SelectContent className="max-w-none w-[180px] sm:w-[300px]">
+          <SelectContent className="w-[200px] sm:w-[300px]">
             {Object.keys(puzzles).map(puzzleId => (
               <SelectItem 
                 key={puzzleId} 
                 value={puzzleId} 
-                className="whitespace-normal pr-8 text-left"
+                className="text-left"
               >
                 {puzzleId}
               </SelectItem>
@@ -97,50 +99,57 @@ const Index = () => {
         </Button>
       </header>
       
-      <div className="flex-1 flex flex-col gap-6 min-h-0">
-        <div className="bg-background rounded-lg border border-secondary/20 p-4">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-medium text-foreground font-mono">output</h2>
-              {testStatus === "passed" && (
-                <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-              )}
-              {testStatus === "failed" && (
-                <XCircle className="w-5 h-5 text-red-500" />
-              )}
-            </div>
-            <Button
-              onClick={handleClear}
-              variant="outline"
-              size="sm"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Clear
-            </Button>
+      {testStatus === "passed" && (
+        <a 
+          href="#" 
+          className="text-emerald-400 hover:text-emerald-300 transition-colors text-lg font-semibold flex items-center gap-2 px-4"
+        >
+          Showcase your solution
+        </a>
+      )}
+
+      <div className="bg-background rounded-lg border border-secondary/20 p-4">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <h2 className="text-lg font-medium text-foreground font-mono">output</h2>
+            {testStatus === "passed" && (
+              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+            )}
+            {testStatus === "failed" && (
+              <XCircle className="w-5 h-5 text-red-500" />
+            )}
           </div>
-          <ConsoleOutput output={output} />
+          <Button
+            onClick={handleClear}
+            variant="outline"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            Clear
+          </Button>
+        </div>
+        <ConsoleOutput output={output} />
+      </div>
+      
+      <div className="flex-1 grid gap-6 md:grid-cols-2">
+        <div className="flex flex-col gap-2">
+          <h2 className="text-lg font-medium text-foreground font-mono">solution.py</h2>
+          <div className="flex-1 overflow-hidden rounded-lg border border-secondary/20">
+            <CodeEditor
+              value={solutionCode}
+              onChange={(value) => setSolutionCode(value || "")}
+            />
+          </div>
         </div>
         
-        <div className="flex-1 grid gap-6 md:grid-cols-2">
-          <div className="flex flex-col gap-2">
-            <h2 className="text-lg font-medium text-foreground font-mono">solution.py</h2>
-            <div className="flex-1 overflow-hidden rounded-lg border border-secondary/20">
-              <CodeEditor
-                value={solutionCode}
-                onChange={(value) => setSolutionCode(value || "")}
-              />
-            </div>
-          </div>
-          
-          <div className="flex flex-col gap-2">
-            <h2 className="text-lg font-medium text-foreground font-mono">test_solution.py</h2>
-            <div className="flex-1 overflow-hidden rounded-lg border border-secondary/20">
-              <CodeEditor
-                value={puzzles[selectedPuzzle]?.test || ""}
-                readOnly
-                className="opacity-100"
-              />
-            </div>
+        <div className="flex flex-col gap-2">
+          <h2 className="text-lg font-medium text-foreground font-mono">test_solution.py</h2>
+          <div className="flex-1 overflow-hidden rounded-lg border border-secondary/20">
+            <CodeEditor
+              value={puzzles[selectedPuzzle]?.test || ""}
+              readOnly
+              className="opacity-100"
+            />
           </div>
         </div>
       </div>
