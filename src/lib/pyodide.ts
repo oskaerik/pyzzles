@@ -9,9 +9,15 @@ declare global {
 let pyodide: PyodideInterface | null = null;
 
 export async function initPyodide() {
-  // Reset pyodide instance on each initialization
-  pyodide = await window.loadPyodide();
-  await pyodide.loadPackage("pytest");
+  if (!pyodide) {
+    try {
+      pyodide = await window.loadPyodide();
+      await pyodide.loadPackage("pytest");
+    } catch (error) {
+      console.error("Failed to initialize Pyodide:", error);
+      throw error;
+    }
+  }
   return pyodide;
 }
 
