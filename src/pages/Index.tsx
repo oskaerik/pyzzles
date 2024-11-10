@@ -101,7 +101,8 @@ const Index = () => {
       
       {testStatus === "passed" && (
         <a 
-          href="#" 
+          href="https://docs.google.com/spreadsheets/d/1oRWRQPjZeR5JE-Mc503nZ2EVZ8bgaEb6iCnwZNigrv0/edit?usp=drivesdk"
+          target="_blank"
           className="text-emerald-400 hover:text-emerald-300 transition-colors text-lg font-semibold flex items-center gap-2 px-4"
         >
           Showcase your solution
