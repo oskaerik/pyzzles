@@ -5,15 +5,24 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import { loadPuzzles } from "@/lib/puzzles";
+import { useState, useEffect } from "react";
 
 const queryClient = new QueryClient();
 
 const App = () => {
-  // Load first puzzle ID for redirect
-  const getFirstPuzzleId = async () => {
-    const puzzles = await loadPuzzles();
-    return Object.keys(puzzles)[0];
-  };
+  const [firstPuzzleId, setFirstPuzzleId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const initFirstPuzzle = async () => {
+      const puzzles = await loadPuzzles();
+      setFirstPuzzleId(Object.keys(puzzles)[0]);
+    };
+    initFirstPuzzle();
+  }, []);
+
+  if (!firstPuzzleId) {
+    return null; // or a loading spinner if you prefer
+  }
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -26,7 +35,7 @@ const App = () => {
               path="/" 
               element={
                 <Navigate 
-                  to={`/puzzles/${getFirstPuzzleId()}`} 
+                  to={`/puzzles/${firstPuzzleId}`} 
                   replace 
                 />
               } 
