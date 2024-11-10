@@ -2,7 +2,7 @@ import { type PyodideInterface } from "pyodide";
 
 declare global {
   interface Window {
-    loadPyodide: (config: any) => Promise<PyodideInterface>;
+    loadPyodide: () => Promise<PyodideInterface>;
   }
 }
 
@@ -10,9 +10,7 @@ let pyodide: PyodideInterface | null = null;
 
 export async function initPyodide() {
   // Reset pyodide instance on each initialization
-  pyodide = await window.loadPyodide({
-    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.26.3/full/",
-  });
+  pyodide = await window.loadPyodide();
   await pyodide.loadPackage("pytest");
   return pyodide;
 }
