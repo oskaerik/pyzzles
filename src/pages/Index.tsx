@@ -70,9 +70,9 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 flex flex-col gap-6">
-      <header className="flex items-center justify-between px-4 sm:px-6 py-4 bg-secondary rounded-xl border border-secondary/20">
-        <div className="flex flex-col items-start -mb-1">
-          <span className="text-sm text-emerald-400 mb-2">Select puzzle:</span>
+      <header className="flex flex-col px-4 sm:px-6 py-4 bg-secondary rounded-xl border border-secondary/20">
+        <span className="text-sm text-muted-foreground mb-2">Select puzzle:</span>
+        <div className="flex items-center justify-between">
           <Select
             value={selectedPuzzle}
             onValueChange={handlePuzzleChange}
@@ -92,16 +92,16 @@ const Index = () => {
               ))}
             </SelectContent>
           </Select>
+          <Button
+            onClick={handleTest}
+            disabled={isRunning}
+            className="w-24 bg-emerald-600 hover:bg-emerald-700 transition-colors"
+          >
+            {isRunning ? "Running..." : "Test"}
+          </Button>
         </div>
-        <Button
-          onClick={handleTest}
-          disabled={isRunning}
-          className="w-24 bg-emerald-600 hover:bg-emerald-700 transition-colors"
-        >
-          {isRunning ? "Running..." : "Test"}
-        </Button>
       </header>
-      
+
       {testStatus === "passed" && (
         <a 
           href="https://docs.google.com/spreadsheets/d/1oRWRQPjZeR5JE-Mc503nZ2EVZ8bgaEb6iCnwZNigrv0/edit?usp=drivesdk"
@@ -162,3 +162,4 @@ const Index = () => {
 };
 
 export default Index;
+
