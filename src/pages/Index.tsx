@@ -71,8 +71,8 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background p-6 flex flex-col gap-6">
       <header className="flex items-center justify-between px-4 sm:px-6 py-4 bg-secondary rounded-xl border border-secondary/20">
-        <div className="flex flex-col items-start gap-1">
-          <span className="text-sm text-muted-foreground">Select puzzle:</span>
+        <div className="flex flex-col items-start">
+          <span className="text-sm text-emerald-400 mb-1">Select puzzle:</span>
           <Select
             value={selectedPuzzle}
             onValueChange={handlePuzzleChange}
