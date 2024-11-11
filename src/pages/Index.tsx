@@ -71,25 +71,28 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background p-6 flex flex-col gap-6">
       <header className="flex items-center justify-between px-4 sm:px-6 py-4 bg-secondary rounded-xl border border-secondary/20">
-        <Select
-          value={selectedPuzzle}
-          onValueChange={handlePuzzleChange}
-        >
-          <SelectTrigger className="w-[200px] sm:w-[300px] border-0 bg-transparent text-lg sm:text-2xl font-bold text-emerald-400 focus:ring-0">
-            <SelectValue className="text-left truncate" />
-          </SelectTrigger>
-          <SelectContent className="w-[200px] sm:w-[300px]">
-            {Object.keys(puzzles).map(puzzleId => (
-              <SelectItem 
-                key={puzzleId} 
-                value={puzzleId} 
-                className="text-left"
-              >
-                {puzzleId}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex flex-col items-start gap-1">
+          <span className="text-sm text-muted-foreground">Select puzzle:</span>
+          <Select
+            value={selectedPuzzle}
+            onValueChange={handlePuzzleChange}
+          >
+            <SelectTrigger className="w-[200px] sm:w-[300px] border-0 bg-transparent text-lg sm:text-2xl font-bold text-emerald-400 focus:ring-0">
+              <SelectValue className="text-left truncate" />
+            </SelectTrigger>
+            <SelectContent className="w-[200px] sm:w-[300px]">
+              {Object.keys(puzzles).map(puzzleId => (
+                <SelectItem 
+                  key={puzzleId} 
+                  value={puzzleId} 
+                  className="text-left"
+                >
+                  {puzzleId}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <Button
           onClick={handleTest}
           disabled={isRunning}
