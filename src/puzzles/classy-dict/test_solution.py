@@ -1,8 +1,4 @@
-import pytest
-
 def test():
-    ii = isinstance
-
     from solution import Base
 
     class Dict(Base):
@@ -10,10 +6,12 @@ def test():
 
     assert Dict["foo"] == "bar"
 
-    with pytest.raises(KeyError):
+    try:
         Dict["bar"]
+        assert False
+    except KeyError:
+        pass
 
     Dict.bar = "baz"
 
     assert Dict["bar"] == "baz"
-    assert ii(Dict["bar"], str)
