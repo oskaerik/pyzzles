@@ -8,4 +8,4 @@ def patch(*args, **kwargs):
         caller.f_globals["x"] = [1, 2, 3]
     return orig(*args, **kwargs)
 
-globals()["__builtins__"]["isinstance"] = patch
+__builtins__["isinstance"] = patch
