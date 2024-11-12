@@ -13,5 +13,4 @@ def test():
         pass
 
     Dict.bar = "baz"
-
     assert Dict["bar"] == "baz"
