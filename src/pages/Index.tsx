@@ -26,6 +26,7 @@ const Index = () => {
   const { puzzleId } = useParams();
 
   useEffect(() => {
+    setIsLoading(true); // Ensure loading state is true before fetching
     const initPuzzles = async () => {
       try {
         const loadedPuzzles = await loadPuzzles();
@@ -39,10 +40,11 @@ const Index = () => {
     initPuzzles();
   }, [puzzleId]);
 
+  // Show loading spinner immediately, fixed in the viewport center
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+      <div className="fixed inset-0 flex items-center justify-center bg-background">
+        <Loader2 className="w-12 h-12 text-emerald-500 animate-spin" />
       </div>
     );
   }
