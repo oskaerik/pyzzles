@@ -4,7 +4,7 @@ import CodeEditor from "@/components/CodeEditor";
 import ConsoleOutput from "@/components/ConsoleOutput";
 import { runTests } from "@/lib/pyodide";
 import { loadPuzzles, type Puzzle } from "@/lib/puzzles";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Select,
@@ -20,19 +20,32 @@ const Index = () => {
   const [selectedPuzzle, setSelectedPuzzle] = useState<string>("");
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [testStatus, setTestStatus] = useState<"passed" | "failed" | null>(null);
   const navigate = useNavigate();
   const { puzzleId } = useParams();
 
   useEffect(() => {
     const initPuzzles = async () => {
-      const loadedPuzzles = await loadPuzzles();
-      setPuzzles(loadedPuzzles);
-      const validPuzzleId = puzzleId && loadedPuzzles[puzzleId] ? puzzleId : Object.keys(loadedPuzzles)[0];
-      setSelectedPuzzle(validPuzzleId);
+      try {
+        const loadedPuzzles = await loadPuzzles();
+        setPuzzles(loadedPuzzles);
+        const validPuzzleId = puzzleId && loadedPuzzles[puzzleId] ? puzzleId : Object.keys(loadedPuzzles)[0];
+        setSelectedPuzzle(validPuzzleId);
+      } finally {
+        setIsLoading(false);
+      }
     };
     initPuzzles();
   }, [puzzleId]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-emerald-500 animate-spin" />
+      </div>
+    );
+  }
 
   const handlePuzzleChange = (puzzleId: string) => {
     setSelectedPuzzle(puzzleId);
@@ -162,4 +175,3 @@ const Index = () => {
 };
 
 export default Index;
-
