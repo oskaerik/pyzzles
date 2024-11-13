@@ -10,7 +10,7 @@ const puzzlesData: Record<string, Puzzle> = Object.fromEntries(
       const id = path.split('/')[3];
       return [id, { id, test: test as string }];
     })
-    .sort(([a], [b]) => a.localeCompare(b))
+    .sort((a, b) => a[0].localeCompare(b[0])) // Compare the IDs (first element of each tuple)
 );
 
 export async function loadPuzzles(): Promise<Record<string, Puzzle>> {
