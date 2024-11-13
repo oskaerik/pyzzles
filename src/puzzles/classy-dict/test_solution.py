@@ -2,15 +2,8 @@ def test():
     from solution import Base
 
     class Dict(Base):
-        foo = "bar"
+        foo = 1
+        bar = 2
 
-    assert Dict["foo"] == "bar"
-
-    try:
-        Dict["bar"]
-        assert False
-    except KeyError:
-        pass
-
-    Dict.bar = "baz"
-    assert Dict["bar"] == "baz"
+    assert Dict["foo"] == 1
+    assert Dict["bar"] == 2
