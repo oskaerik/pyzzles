@@ -20,13 +20,12 @@ const Index = () => {
   const [selectedPuzzle, setSelectedPuzzle] = useState<string>("");
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true); // Initialize as true
   const [testStatus, setTestStatus] = useState<"passed" | "failed" | null>(null);
   const navigate = useNavigate();
   const { puzzleId } = useParams();
 
   useEffect(() => {
-    setIsLoading(true); // Ensure loading state is true before fetching
     const initPuzzles = async () => {
       try {
         const loadedPuzzles = await loadPuzzles();
