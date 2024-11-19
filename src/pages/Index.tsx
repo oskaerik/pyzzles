@@ -20,7 +20,7 @@ const Index = () => {
   const [selectedPuzzle, setSelectedPuzzle] = useState<string>("");
   const [output, setOutput] = useState("");
   const [isRunning, setIsRunning] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Initialize as true
+  const [isLoading, setIsLoading] = useState(true);
   const [testStatus, setTestStatus] = useState<"passed" | "failed" | null>(null);
   const navigate = useNavigate();
   const { puzzleId } = useParams();
@@ -39,7 +39,6 @@ const Index = () => {
     initPuzzles();
   }, [puzzleId]);
 
-  // Show loading spinner immediately, fixed in the viewport center
   if (isLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-background">
@@ -84,6 +83,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 flex flex-col gap-6">
+      <a 
+        href="https://github.com/oskaerik/pyzzles"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-emerald-400 hover:text-emerald-300 transition-colors"
+      >
+        https://github.com/oskaerik/pyzzles
+      </a>
+
       <header className="flex flex-col px-4 sm:px-6 py-4 bg-secondary rounded-xl border border-secondary/20">
         <span className="text-sm text-muted-foreground mb-2">Select puzzle:</span>
         <div className="flex items-center justify-between">
