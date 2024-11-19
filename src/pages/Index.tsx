@@ -125,13 +125,16 @@ const Index = () => {
       </header>
 
       {testStatus === "passed" && (
-        <a 
-          href="https://docs.google.com/spreadsheets/d/1oRWRQPjZeR5JE-Mc503nZ2EVZ8bgaEb6iCnwZNigrv0/edit?usp=drivesdk"
-          target="_blank"
-          className="text-emerald-400 hover:text-emerald-300 transition-colors text-lg font-semibold flex items-center gap-2 px-4"
-        >
-          Showcase your solution
-        </a>
+        <div className="text-muted-foreground text-lg font-semibold flex items-center gap-2 px-4">
+          Add your solution to the{" "}
+          <a 
+            href="https://docs.google.com/spreadsheets/d/1oRWRQPjZeR5JE-Mc503nZ2EVZ8bgaEb6iCnwZNigrv0/edit?usp=drivesdk"
+            target="_blank"
+            className="text-emerald-400 hover:text-emerald-300 transition-colors"
+          >
+            showcase
+          </a>
+        </div>
       )}
 
       <div className="bg-background rounded-lg border border-secondary/20 p-4">
