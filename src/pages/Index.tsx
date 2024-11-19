@@ -125,15 +125,12 @@ const Index = () => {
       </header>
 
       {testStatus === "passed" && (
-        <div className="text-muted-foreground text-lg font-semibold flex items-center gap-2 px-4">
-          Add your solution to the{" "}
-          <a 
+        <div className="text-muted-foreground text-lg font-semibold px-4">
+          Add your solution to the <a 
             href="https://docs.google.com/spreadsheets/d/1oRWRQPjZeR5JE-Mc503nZ2EVZ8bgaEb6iCnwZNigrv0/edit?usp=drivesdk"
             target="_blank"
             className="text-emerald-400 hover:text-emerald-300 transition-colors"
-          >
-            showcase
-          </a>
+          >showcase</a>
         </div>
       )}
 
