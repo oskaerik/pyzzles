@@ -93,7 +93,7 @@ const Index = () => {
       </a>
 
       <header className="flex flex-col px-4 sm:px-6 py-4 bg-secondary rounded-xl border border-secondary/20">
-        <span className="text-sm text-muted-foreground mb-2">Select puzzle:</span>
+        <span className="text-sm text-muted-foreground mb-2">select puzzle:</span>
         <div className="flex items-center justify-between">
           <Select
             value={selectedPuzzle}
@@ -119,14 +119,14 @@ const Index = () => {
             disabled={isRunning}
             className="w-24 bg-emerald-600 hover:bg-emerald-700 transition-colors"
           >
-            {isRunning ? "Running..." : "Test"}
+            {isRunning ? "running..." : "test"}
           </Button>
         </div>
       </header>
 
       {testStatus === "passed" && (
         <div className="text-muted-foreground text-lg font-semibold px-4">
-          Add your solution to the <a 
+          add your solution to the <a 
             href="https://docs.google.com/spreadsheets/d/1oRWRQPjZeR5JE-Mc503nZ2EVZ8bgaEb6iCnwZNigrv0/edit?usp=drivesdk"
             target="_blank"
             className="text-emerald-400 hover:text-emerald-300 transition-colors"
@@ -151,7 +151,7 @@ const Index = () => {
             size="sm"
             className="text-muted-foreground hover:text-foreground"
           >
-            Clear
+            clear
           </Button>
         </div>
         <ConsoleOutput output={output} />

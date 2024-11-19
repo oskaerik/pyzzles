@@ -31,7 +31,7 @@ const ConsoleOutput = ({ output, className }: ConsoleOutputProps) => {
       ))}
       {!output && (
         <div className="text-muted-foreground">
-          Click the "Test" button to run your code...
+          click test to run your code...
         </div>
       )}
     </div>
